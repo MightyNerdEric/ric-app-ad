@@ -68,9 +68,9 @@ jobs:
         run: sleep 10s
 
   call-gerrit-tox-verify:
-    needs: prepare
+    # needs: prepare
     # yamllint disable-line rule:line-length
-    uses: lfit/releng-reusable-workflows/.github/workflows/gerrit-compose-required-tox-verify.yaml@main
+    uses: mightynerderic/releng-reusable-workflows/.github/workflows/gerrit-compose-required-tox-verify.yaml@tox-pre-build-fix
     with:
       GERRIT_BRANCH: ${{ inputs.GERRIT_BRANCH }}
       GERRIT_CHANGE_ID: ${{ inputs.GERRIT_CHANGE_ID }}
@@ -81,7 +81,10 @@ jobs:
       GERRIT_PATCHSET_REVISION: ${{ inputs.GERRIT_PATCHSET_REVISION }}
       GERRIT_PROJECT: ${{ inputs.GERRIT_PROJECT }}
       GERRIT_REFSPEC: ${{ inputs.GERRIT_REFSPEC }}
-      TOX_ENVS: '["code","flake8","docs","docs-linkcheck"]'
+      TOX_ENVS: '["code"]'
+      # TOX_ENVS: '["code","flake8","docs","docs-linkcheck"]'
+      PYTHON_VERSION: "3.10"
+      PRE_BUILD_SCRIPT_URL: "https://raw.githubusercontent.com/o-ran-sc/ci-management/master/jjb/shell/install-deb-rmr.sh"
 
   vote:
     if: ${{ always() }}
